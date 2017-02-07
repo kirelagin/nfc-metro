@@ -1,6 +1,6 @@
 PACKAGE = metro
 
-CXX      ?= gcc
+CXX      ?= clang
 CXXFLAGS +=
 LDFLAGS  +=
 
@@ -19,12 +19,7 @@ $(PACKAGE)$(EXEEXT): $(patsubst %.c, %.o, $(exe_src))
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) $^ $(exe_libs) -o $@
 
 clean:
-	rm -f src/*.o src/*.d $(PACKAGE)$(EXEEXT)
+	rm -f src/*.o $(PACKAGE)$(EXEEXT)
 
 %.o : %.c
-	$(CXX) $(CXXFLAGS) -MD -c $< -o $(patsubst %.c, %.o, $<)
-
-ifneq "$(MAKECMDGOALS)" "clean"
-deps  = $(patsubst %.c, %.d, $(exe_src))
--include $(deps)
-endif
+	$(CXX) $(CXXFLAGS) -c $< -o $(patsubst %.c, %.o, $<)
